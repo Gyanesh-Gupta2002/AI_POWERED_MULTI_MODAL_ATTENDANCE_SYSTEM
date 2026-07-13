@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Export — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Data Export</div>
+  <h1>Export Attendance</h1>
+  <p>Select a date to export that day's records, or export everything at once.</p>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Export by Date</div>
+  <form method="GET" action="{{ url_for('export_attendance') }}">
+    <label for="date">Select Date</label>
+    <input type="date" id="date" name="date" required
+           style="width:100%; background: var(--bg); border:1px solid var(--line);
+                  border-radius: var(--radius); padding:12px 14px; color: var(--text);
+                  font-family: var(--sans); font-size:14px; margin-bottom:20px;">
+    <button type="submit" class="btn">📤 Export Selected Date</button>
+  </form>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Export Everything</div>
+  <p style="color: var(--text-dim); font-size: 14px; margin-bottom: 16px;">
+    Download the complete attendance history across all dates.
+  </p>
+  <a href="{{ url_for('export_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">
+    📤 Export All Records
+  </a>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}QR Code — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">QR Code</div>
+  <h1>{{ person_code }}</h1>
+  <p>Print this QR code and attach it to the person's ID card for attendance scanning.</p>
+</div>
+
+<div class="panel" style="text-align: center; max-width: 400px;">
+  <img src="{{ url_for('static', filename='qrcodes/' ~ person_code ~ '.png') }}"
+       alt="QR code for {{ person_code }}"
+       style="width: 250px; height: 250px; background: white; padding: 12px; border-radius: var(--radius);">
+  <br><br>
+  <a href="{{ url_for('static', filename='qrcodes/' ~ person_code ~ '.png') }}"
+     download="{{ person_code }}_qr.png" class="btn">⬇ Download QR</a>
+</div>
+{% endblock %}

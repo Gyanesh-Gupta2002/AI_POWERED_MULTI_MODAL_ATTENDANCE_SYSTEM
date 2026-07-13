@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ person.name }} Report — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Analytics</div>
+  <h1>{{ person.name }}'s Attendance</h1>
+  <p>Code: {{ person.person_code }} — {{ start_date }} to {{ end_date }}</p>
+</div>
+
+<div class="panel" style="max-width: 500px;">
+  <form method="GET" action="{{ url_for('report_person', person_id=person.id) }}">
+    <label for="start_date">From</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+
+    <label for="end_date">To</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+
+    <button type="submit" class="btn">Update Range</button>
+    <a href="{{ url_for('reports') }}" class="btn btn-secondary" style="text-decoration:none; margin-left: 10px;">Back to Summary</a>
+  </form>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Daily Records</div>
+  {% if records %}
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>In Time</th>
+          <th>Out Time</th>
+          <th>Total Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.date }}</td>
+          <td><span class="badge">{{ r.time }}</span></td>
+          <td>
+            {% if r.out_time %}
+              <span class="badge">{{ r.out_time }}</span>
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">Not yet</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.total_hours %}
+              {{ r.total_hours }} hrs
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No attendance in this date range.</div>
+  {% endif %}
+</div>
+{% endblock %}

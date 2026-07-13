@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Reports — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Analytics</div>
+  <h1>Attendance Reports</h1>
+  <p>Select a date range to see attendance summary for everyone.</p>
+</div>
+
+<div class="panel" style="max-width: 500px;">
+  <form method="GET" action="{{ url_for('reports') }}">
+    <label for="start_date">From</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+
+    <label for="end_date">To</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}" required>
+
+    <button type="submit" class="btn">Generate Report</button>
+  </form>
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Summary ({{ start_date }} to {{ end_date }})
+    <a href="{{ url_for('export_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">📤 Export CSV</a>
+  </div>
+  {% if summary %}
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Present Days</th>
+          <th>Total Days</th>
+          <th>Attendance %</th>
+          <th>Total Hours</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in summary %}
+        <tr>
+          <td>{{ s.person_code }}</td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.present_days }}</td>
+          <td>{{ s.total_days }}</td>
+          <td>
+            {% if s.attendance_pct >= 75 %}
+              <span class="badge badge-ontime">{{ s.attendance_pct }}%</span>
+            {% elif s.attendance_pct >= 50 %}
+              <span class="badge">{{ s.attendance_pct }}%</span>
+            {% else %}
+              <span class="badge badge-late">{{ s.attendance_pct }}%</span>
+            {% endif %}
+          </td>
+          <td>{{ s.total_hours }} hrs</td>
+          <td>
+            <a href="{{ url_for('report_person', person_id=s.person_id, start_date=start_date, end_date=end_date) }}"
+               class="btn btn-secondary" style="text-decoration:none; padding: 6px 14px;">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No registered people yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

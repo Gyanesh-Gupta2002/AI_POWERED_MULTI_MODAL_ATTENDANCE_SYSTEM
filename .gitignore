@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+attendance.db
+trainer/
+voiceprints/
+voice_samples_temp/
+static/qrcodes/
+.env

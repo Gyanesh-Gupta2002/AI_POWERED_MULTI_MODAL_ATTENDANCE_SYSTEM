@@ -1,0 +1,550 @@
+/* ============================================================
+   Face Recognition Attendance — "Scanner Console" theme
+   Palette: deep graphite background, phosphor-cyan accent,
+   amber for warnings, mono type for data / readouts.
+   ============================================================ */
+
+:root {
+  --bg: #0d1117;
+  --bg-panel: #141a23;
+  --bg-panel-raised: #1a212c;
+  --line: #263042;
+  --text: #e6edf3;
+  --text-dim: #8b98a9;
+  --accent: #4fd1c5;       /* phosphor cyan - "scanning" color */
+  --accent-dim: #2a5f5a;
+  --warn: #e0a94f;
+  --danger: #e0644f;
+  --success: #4fd17a;
+  --radius: 3px;
+  --mono: "JetBrains Mono", "SF Mono", "Consolas", monospace;
+  --sans: "Inter", -apple-system, "Segoe UI", sans-serif;
+}
+
+/* Light theme overrides */
+[data-theme="light"] {
+  --bg: #f5f7fa;
+  --bg-panel: #ffffff;
+  --bg-panel-raised: #eef1f5;
+  --line: #d7dee6;
+  --text: #1a212c;
+  --text-dim: #5b6675;
+  --accent: #0f9b8e;
+  --accent-dim: #a7e8e0;
+  --warn: #b8791f;
+  --danger: #c9432b;
+  --success: #1f9a4e;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: var(--sans);
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ---------------- Top bar ---------------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 32px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+[data-theme="light"] .topbar {
+  background: rgba(245, 247, 250, 0.85);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.brand .dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.nav-links a { color: var(--text-dim); }
+.nav-links a:hover { color: var(--accent); text-decoration: none; }
+
+/* ---------------- Layout ---------------- */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.page-header {
+  margin-bottom: 36px;
+  border-left: 3px solid var(--accent);
+  padding-left: 16px;
+}
+
+.page-header .eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.page-header p {
+  color: var(--text-dim);
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* ---------------- Theme toggle ---------------- */
+.theme-toggle {
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 6px 10px;
+  cursor: pointer;
+  margin-left: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ---------------- RFID waiting indicator ---------------- */
+.rfid-pulse {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(79, 209, 197, 0.6);
+  animation: rfid-pulse-anim 1.4s infinite;
+  flex-shrink: 0;
+}
+
+/* ---------------- RFID Scanner ---------------- */
+.rfid-panel {
+  max-width: 100%;
+}
+
+.rfid-row {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.rfid-scan-box {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.rfid-manual-box {
+  flex: 1;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.rfid-manual-box label {
+  margin-bottom: 10px;
+}
+
+.rfid-manual-box input {
+  margin-bottom: 0;
+}
+
+/* Vertical OR divider between the two boxes */
+.or-divider-vertical {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 4px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+.or-divider-vertical::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: var(--line);
+}
+
+.or-divider-vertical span {
+  background: var(--bg-panel);
+  padding: 6px 4px;
+  z-index: 1;
+}
+
+/* On small screens, stack vertically and use horizontal divider */
+@media (max-width: 640px) {
+  .rfid-row {
+    flex-direction: column;
+  }
+  .or-divider-vertical {
+    padding: 8px 0;
+  }
+  .or-divider-vertical::before {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 1px;
+  }
+}
+
+.rfid-radar {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rfid-radar-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  opacity: 0;
+  animation: radar-expand 2.4s ease-out infinite;
+}
+
+.rfid-radar-ring.delay1 { animation-delay: 0.8s; }
+.rfid-radar-ring.delay2 { animation-delay: 1.6s; }
+
+@keyframes radar-expand {
+  0% {
+    transform: scale(0.3);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+.rfid-radar-core {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(79, 209, 197, 0.5);
+  z-index: 1;
+}
+
+.rfid-status {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.rfid-subtext {
+  color: var(--text-dim);
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+/* State when card detected */
+.rfid-scan-box.detected .rfid-radar-core {
+  background: var(--success);
+  box-shadow: 0 0 20px rgba(79, 209, 122, 0.6);
+}
+
+.rfid-scan-box.detected .rfid-status {
+  color: var(--success);
+}
+
+/* ---------------- Panels / cards ---------------- */
+.panel {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 24px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.panel-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.stat .value {
+  font-family: var(--mono);
+  font-size: 32px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.stat .label {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* ---------------- Forms ---------------- */
+label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-family: var(--mono);
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  margin-bottom: 20px;
+  transition: border-color 0.15s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #06110f;
+  border: none;
+  border-radius: var(--radius);
+  padding: 12px 22px;
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn:hover {
+  box-shadow: 0 0 16px rgba(79, 209, 197, 0.4);
+}
+
+.btn:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--line);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  box-shadow: none;
+  color: var(--accent);
+}
+
+/* ---------------- Table ---------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+tr:last-child td { border-bottom: none; }
+
+.badge {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--radius);
+  background: rgba(79, 209, 197, 0.12);
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.badge-late {
+  background: rgba(224, 100, 79, 0.15);
+  color: var(--danger);
+  margin-left: 6px;
+}
+.badge-on-time {
+  background: rgba(79, 209, 122, 0.15);
+  color: var(--success);
+  margin-left: 6px;
+}
+
+/* ---------------- Flash messages ---------------- */
+.flash {
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  margin-bottom: 20px;
+  font-family: var(--mono);
+  border: 1px solid;
+}
+
+.flash-success { background: rgba(79, 209, 122, 0.08); border-color: var(--success); color: var(--success); }
+.flash-error { background: rgba(224, 100, 79, 0.08); border-color: var(--danger); color: var(--danger); }
+
+/* ---------------- Hero (index page) ---------------- */
+.hero {
+  text-align: center;
+  padding: 100px 24px;
+}
+
+.hero .scanline {
+  width: 64px;
+  height: 3px;
+  background: var(--accent);
+  margin: 0 auto 24px;
+  box-shadow: 0 0 12px var(--accent);
+}
+
+.hero h1 {
+  font-size: 40px;
+  margin: 0 0 16px;
+  font-weight: 700;
+}
+
+.hero p {
+  color: var(--text-dim);
+  font-size: 16px;
+  max-width: 480px;
+  margin: 0 auto 32px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 13px;
+}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Overview</div>
+  <h1>Dashboard</h1>
+  <p>Snapshot of registered people and today's attendance.</p>
+</div>
+
+<div class="stat-grid">
+  <div class="stat">
+    <div class="value">{{ people_count }}</div>
+    <div class="label">Registered People</div>
+  </div>
+  <div class="stat">
+    <div class="value">{{ todays_attendance | length }}</div>
+    <div class="label">Present Today</div>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Quick Actions</div>
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <a href="{{ url_for('recognize') }}" class="btn btn-secondary" style="text-decoration:none;">📷 Recognize (Camera)</a>
+    <a href="{{ url_for('voice_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🎤 Mark by Voice</a>
+    <a href="{{ url_for('qr_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🔢 QR Scan</a>
+    <a href="{{ url_for('rfid_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">💳 RFID Scan</a>
+    <a href="{{ url_for('export_page') }}" class="btn btn-secondary" style="text-decoration:none;">📤 Export CSV</a>
+    <a href="{{ url_for('reports') }}" class="btn btn-secondary" style="text-decoration:none;">📊 Reports</a>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Absent Today</div>
+  {% if absentees %}
+    <table>
+      <thead>
+        <tr><th>Code</th><th>Name</th></tr>
+      </thead>
+      <tbody>
+        {% for a in absentees %}
+        <tr>
+          <td>{{ a.person_code }}</td>
+          <td>{{ a.name }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">🎉 Everyone is present today!</div>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Registered People
+    <a href="{{ url_for('register') }}" class="btn btn-secondary" style="text-decoration:none;">+ Add Person</a>
+  </div>
+  {% if people %}
+    <table>
+      <thead>
+        <tr><th>Code</th><th>Name</th></tr>
+      </thead>
+      <tbody>
+        {% for p in people %}
+        <tr><td>{{ p.person_code }}</td><td>{{ p.name }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No one registered yet. Add your first person to get started.</div>
+  {% endif %}
+</div>
+
+<div class="panel">
+  <div class="panel-title">
+    Today's Attendance
+    <a href="{{ url_for('attendance') }}" class="btn btn-secondary" style="text-decoration:none;">View All</a>
+  </div>
+  {% if todays_attendance %}
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>In Time</th>
+          <th>Out Time</th>
+          <th>Total Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in todays_attendance %}
+        <tr>
+          <td>{{ r.person_code }}</td>
+          <td>{{ r.name }}</td>
+          <td>
+            <span class="badge">{{ r.time }}</span>
+            {% if r.time > cutoff %}
+              <span class="badge badge-late">Late</span>
+            {% else %}
+              <span class="badge badge-ontime">On Time</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.out_time %}
+              <span class="badge">{{ r.out_time }}</span>
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">Not yet</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.total_hours %}
+              {{ r.total_hours }} hrs
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No attendance marked yet today.</div>
+  {% endif %}
+</div>
+{% endblock %}

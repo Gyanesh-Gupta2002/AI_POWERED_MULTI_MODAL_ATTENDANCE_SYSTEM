@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}RFID Attendance — AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="eyebrow">Live Scanning</div>
+  <h1>RFID Attendance</h1>
+  <p>Tap or scan the RFID card near the reader, or enter the card number manually.</p>
+</div>
+
+<div class="panel rfid-panel">
+  <div class="panel-title">Scanner</div>
+
+  <form method="POST" action="{{ url_for('rfid_attendance') }}" id="rfidForm">
+    <div class="rfid-row">
+
+      <!-- Scan section -->
+      <div class="rfid-scan-box" id="waitingIndicator">
+        <div class="rfid-radar">
+          <div class="rfid-radar-ring"></div>
+          <div class="rfid-radar-ring delay1"></div>
+          <div class="rfid-radar-ring delay2"></div>
+          <div class="rfid-radar-core">📶</div>
+        </div>
+        <div class="rfid-scan-text">
+          <div class="rfid-status" id="rfidStatusText">Waiting for card...</div>
+          <div class="rfid-subtext">Hold the RFID card near the reader</div>
+        </div>
+      </div>
+
+      <!-- OR divider (vertical) -->
+      <div class="or-divider-vertical">
+        <span>OR</span>
+      </div>
+
+      <!-- Manual entry section -->
+      <div class="rfid-manual-box">
+        <label for="rfid_input">Enter Card Number Manually</label>
+        <input type="text" id="rfid_input" name="rfid_input" autofocus
+               placeholder="Type card number and press Enter"
+               autocomplete="off">
+      </div>
+
+    </div>
+  </form>
+
+  <p style="color: var(--text-dim); font-size: 13px; margin-top: 16px;">
+    Keep this field focused. Most USB RFID readers act like a keyboard —
+    scanning a card types the number and presses Enter automatically.
+  </p>
+</div>
+
+<div class="panel">
+  <div class="panel-title">Records</div>
+  {% if records %}
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Date</th>
+          <th>In Time</th>
+          <th>Out Time</th>
+          <th>Total Hours</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in records %}
+        <tr>
+          <td>{{ r.person_code }}</td>
+          <td>{{ r.name }}</td>
+          <td>{{ r.date }}</td>
+          <td>
+            <span class="badge">{{ r.time }}</span>
+            {% if r.time > cutoff %}
+              <span class="badge badge-late">Late</span>
+            {% else %}
+              <span class="badge badge-ontime">On Time</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.out_time %}
+              <span class="badge">{{ r.out_time }}</span>
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">Not yet</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if r.total_hours %}
+              {{ r.total_hours }} hrs
+            {% else %}
+              <span style="color: var(--text-dim); font-size: 12px;">—</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty-state">No attendance records yet.</div>
+  {% endif %}
+</div>
+{% endblock %}
