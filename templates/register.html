@@ -9,36 +9,44 @@
      ~50 face samples. Make sure the camera window has focus and good lighting.</p>
 </div>
 
-<div class="panel" style="max-width: 480px;">
-  <form method="POST" action="{{ url_for('register') }}" data-confirm-camera>
-    <label for="person_code">Person ID / Roll No. / Employee Code</label>
-    <input type="text" id="person_code" name="person_code" required placeholder="e.g. EMP1024">
+<div class="register-grid">
+  <div class="panel">
+    <div class="panel-title">Person Details</div>
+    <form method="POST" action="{{ url_for('register') }}" data-confirm-camera>
+      <label for="person_code">Person ID / Roll No. / Employee Code</label>
+      <input type="text" id="person_code" name="person_code" required placeholder="e.g. EMP1024">
 
-    <label for="name">Full Name</label>
-    <input type="text" id="name" name="name" required placeholder="e.g. Priya Sharma">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required placeholder="e.g. Priya Sharma">
 
-    <label for="rfid_card">RFID Card Number (optional)</label>
-    <input type="text" id="rfid_card" name="rfid_card" placeholder="Scan card here or leave blank">
+      <label for="rfid_card">RFID Card Number (optional)</label>
+      <input type="text" id="rfid_card" name="rfid_card" placeholder="Scan card here or leave blank">
 
-    <button type="submit" class="btn">Start Face Capture</button>
-  </form>
-  <p style="color: var(--text-dim); font-size: 12px; margin-top: 16px;">
-    A QR code will be generated automatically for this person after registration.
-  </p>
-</div>
+      <button type="submit" class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+        Start Face Capture
+      </button>
+    </form>
+    <p class="hint-text">A QR code will be generated automatically for this person after registration.</p>
+  </div>
 
-<div class="panel">
-  <div class="panel-title">
-    Next Step
+  <div class="panel next-step-panel">
+    <div class="next-step-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+    </div>
+    <div class="panel-title" style="margin:0;">Next Step</div>
+    <p class="hint-text" style="margin: 8px 0 18px;">
+      After capturing faces for everyone you want to register, click
+      <strong>Train Model</strong> to update the recognizer before running
+      live attendance scanning.
+    </p>
     <form method="POST" action="{{ url_for('train') }}">
-      <button type="submit" class="btn btn-secondary">Train Model</button>
+      <button type="submit" class="btn btn-secondary" style="width:100%; justify-content:center;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 2v10l7 7"/></svg>
+        Train Model
+      </button>
     </form>
   </div>
-  <p style="color: var(--text-dim); font-size: 14px;">
-    After capturing faces for everyone you want to register, click
-    <strong>Train Model</strong> to update the recognizer before running
-    live attendance scanning.
-  </p>
 </div>
 
 <div class="panel">
@@ -63,23 +71,37 @@
       {% if p.rfid_card %}
         <span class="badge">{{ p.rfid_card }}</span>
       {% else %}
-        <span style="color: var(--text-dim); font-size: 12px;">Not assigned</span>
+        <span class="muted-text">Not assigned</span>
       {% endif %}
     </td>
     <td>
-      <a href="{{ url_for('view_qr', person_code=p.person_code) }}" class="btn btn-secondary" style="text-decoration:none; padding: 6px 14px;">View</a>
+      <a href="{{ url_for('view_qr', person_code=p.person_code) }}" class="btn-icon-sm">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg>
+        View
+      </a>
     </td>
-    <td style="display:flex; gap:8px; flex-wrap: wrap;">
-  <a href="{{ url_for('edit_person', person_id=p.id) }}" class="btn btn-secondary" style="text-decoration:none; padding: 6px 14px;">Edit</a>
-  <form method="POST" action="{{ url_for('enroll_person_voice', person_id=p.id) }}" data-confirm-voice style="display:inline;">
-    <button type="submit" class="btn btn-secondary" style="padding: 6px 14px;">🎤 Enroll Voice</button>
-  </form>
-  <form method="POST" action="{{ url_for('delete_person', person_id=p.id) }}"
-        onsubmit="return confirm('Delete {{ p.name }}? This also removes all their attendance records. This cannot be undone.');"
-        style="display:inline;">
-    <button type="submit" class="btn btn-secondary" style="padding: 6px 14px; border-color: var(--danger); color: var(--danger);">Delete</button>
-  </form>
-</td>
+    <td>
+      <div class="action-row">
+        <a href="{{ url_for('edit_person', person_id=p.id) }}" class="btn-icon-sm">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+          Edit
+        </a>
+        <form method="POST" action="{{ url_for('enroll_person_voice', person_id=p.id) }}" data-confirm-voice style="display:inline;">
+          <button type="submit" class="btn-icon-sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+            Voice
+          </button>
+        </form>
+        <form method="POST" action="{{ url_for('delete_person', person_id=p.id) }}"
+              onsubmit="return confirm('Delete {{ p.name }}? This also removes all their attendance records. This cannot be undone.');"
+              style="display:inline;">
+          <button type="submit" class="btn-icon-sm btn-icon-danger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            Delete
+          </button>
+        </form>
+      </div>
+    </td>
   </tr>
   {% endfor %}
 </tbody>

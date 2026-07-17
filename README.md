@@ -6,6 +6,7 @@ An intelligent attendance management system that lets people check in using **Fa
 
 ## 📋 Table of Contents
 
+- [Screenshots](#-screenshots)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
@@ -13,6 +14,43 @@ An intelligent attendance management system that lets people check in using **Fa
 - [Usage Guide](#usage-guide)
 - [Future Scope](#future-scope--improvements)
 - [Notes](#notes)
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Home (Dark & Light Mode)
+<img src="static/screenshots/home_dark.png" alt="Home Page - Dark Mode" width="400"/> <img src="static/screenshots/home_light.png" alt="Home Page - Light Mode" width="400"/>
+
+### 🔐 Admin Login
+<img src="static/screenshots/login.png" alt="Admin Login" width="800"/>
+
+### 📊 Dashboard
+<img src="static/screenshots/dashboard.png" alt="Dashboard" width="800"/>
+
+### 📝 Register a New Person
+<img src="static/screenshots/register.png" alt="Register Page" width="800"/>
+
+### 📷 Face Recognition Attendance
+<img src="static/screenshots/face_attendance.png" alt="Face Attendance" width="800"/>
+<img src="static/screenshots/face_scan.png" alt="Face Scan in Progress" width="800"/>
+
+### 🎤 Voice Attendance
+<img src="static/screenshots/voice_attendance.png" alt="Voice Attendance" width="800"/>
+
+### 🔢 QR Code Attendance
+<img src="static/screenshots/qr_attendance.png" alt="QR Attendance" width="800"/>
+<img src="static/screenshots/qr_scan.png" alt="QR Scan in Progress" width="800"/>
+
+### 📶 RFID Attendance
+<img src="static/screenshots/rfid_attendance.png" alt="RFID Attendance" width="800"/>
+<img src="static/screenshots/rfid_detect.png" alt="RFID Card Detected" width="800"/>
+
+### 📈 Attendance Reports
+<img src="static/screenshots/reports.png" alt="Attendance Reports" width="800"/>
+
+### 📤 Export Attendance
+<img src="static/screenshots/export.png" alt="Export Attendance" width="800"/>
 
 ---
 
@@ -112,7 +150,8 @@ AI-Powered-Multi-Modal-Attendance-System/
 ├── static/
 │   ├── css/style.css               # App styling (dark/light theme)
 │   ├── js/script.js                # Client-side interactivity
-│   └── qrcodes/                    # Generated QR code images
+│   ├── qrcodes/                    # Generated QR code images
+│   └── screenshots/                # README screenshots
 ├── trainer/                        # Trained face recognition model files
 ├── voiceprints/                    # Stored voiceprints (.npy files)
 ├── requirements.txt

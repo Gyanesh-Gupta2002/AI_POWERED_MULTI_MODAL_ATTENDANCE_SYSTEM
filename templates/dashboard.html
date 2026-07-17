@@ -10,10 +10,16 @@
 
 <div class="stat-grid">
   <div class="stat">
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
     <div class="value">{{ people_count }}</div>
     <div class="label">Registered People</div>
   </div>
   <div class="stat">
+    <div class="stat-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
     <div class="value">{{ todays_attendance | length }}</div>
     <div class="label">Present Today</div>
   </div>
@@ -21,13 +27,43 @@
 
 <div class="panel">
   <div class="panel-title">Quick Actions</div>
-  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-    <a href="{{ url_for('recognize') }}" class="btn btn-secondary" style="text-decoration:none;">📷 Recognize (Camera)</a>
-    <a href="{{ url_for('voice_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🎤 Mark by Voice</a>
-    <a href="{{ url_for('qr_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🔢 QR Scan</a>
-    <a href="{{ url_for('rfid_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">💳 RFID Scan</a>
-    <a href="{{ url_for('export_page') }}" class="btn btn-secondary" style="text-decoration:none;">📤 Export CSV</a>
-    <a href="{{ url_for('reports') }}" class="btn btn-secondary" style="text-decoration:none;">📊 Reports</a>
+  <div class="quick-actions-grid">
+    <a href="{{ url_for('recognize') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <span>Recognize (Camera)</span>
+    </a>
+    <a href="{{ url_for('voice_attendance') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+      <span>Mark by Voice</span>
+    </a>
+    <a href="{{ url_for('qr_attendance') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="14" y1="20" x2="14" y2="20.01"/><line x1="17" y1="14" x2="20" y2="14"/><line x1="20" y1="17" x2="17" y2="17"/><line x1="17" y1="20" x2="20" y2="20"/></svg>
+      </div>
+      <span>QR Scan</span>
+    </a>
+    <a href="{{ url_for('rfid_attendance') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.9a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      </div>
+      <span>RFID Scan</span>
+    </a>
+    <a href="{{ url_for('export_page') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <span>Export CSV</span>
+    </a>
+    <a href="{{ url_for('reports') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <span>Reports</span>
+    </a>
   </div>
 </div>
 

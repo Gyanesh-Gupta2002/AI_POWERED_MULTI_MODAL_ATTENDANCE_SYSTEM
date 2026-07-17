@@ -29,6 +29,7 @@
       {% else %}
         <a href="{{ url_for('login') }}">Login</a>
       {% endif %}
+      <span class="status-badge"><span class="status-dot"></span> SYSTEM ONLINE</span>
       <button id="themeToggle" class="theme-toggle" type="button">🌙 Dark</button>
     </div>
   </div>
@@ -46,6 +47,11 @@
 
     {% block content %}{% endblock %}
   </div>
+
+  <footer class="site-footer">
+    <span>© 2026 Attendance System</span>
+    <span id="themeLabel">Dark Mode</span>
+  </footer>
 
   <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>

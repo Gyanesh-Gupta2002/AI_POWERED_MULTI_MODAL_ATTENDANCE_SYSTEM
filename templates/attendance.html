@@ -14,11 +14,31 @@
 
 <div class="panel">
   <div class="panel-title">Choose Attendance Method</div>
-  <div style="display:flex; gap:10px; flex-wrap:wrap;">
-    <a href="{{ url_for('recognize') }}" class="btn btn-secondary" style="text-decoration:none;">📷 Camera</a>
-    <a href="{{ url_for('voice_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🎤 Voice</a>
-    <a href="{{ url_for('qr_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">🔢 QR Scan</a>
-    <a href="{{ url_for('rfid_attendance') }}" class="btn btn-secondary" style="text-decoration:none;">💳 RFID</a>
+  <div class="quick-actions-grid">
+    <a href="{{ url_for('recognize') }}" class="quick-action{% if mode != 'voice' %} quick-action-active{% endif %}">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <span>Camera</span>
+    </a>
+    <a href="{{ url_for('voice_attendance') }}" class="quick-action{% if mode == 'voice' %} quick-action-active{% endif %}">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </div>
+      <span>Voice</span>
+    </a>
+    <a href="{{ url_for('qr_attendance') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="14" y1="20" x2="14" y2="20.01"/><line x1="17" y1="14" x2="20" y2="14"/><line x1="20" y1="17" x2="17" y2="17"/><line x1="17" y1="20" x2="20" y2="20"/></svg>
+      </div>
+      <span>QR Scan</span>
+    </a>
+    <a href="{{ url_for('rfid_attendance') }}" class="quick-action">
+      <div class="quick-action-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.9a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+      </div>
+      <span>RFID</span>
+    </a>
   </div>
 </div>
 
@@ -27,21 +47,27 @@
     Scanner
     {% if mode == "voice" %}
     <form method="POST" action="{{ url_for('voice_attendance') }}">
-      <button type="submit" class="btn">Start Speech</button>
+      <button type="submit" class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+        Start Speech
+      </button>
     </form>
     {% else %}
     <form method="POST" action="{{ url_for('recognize') }}" data-confirm-camera>
-      <button type="submit" class="btn">Start Scan</button>
+      <button type="submit" class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>
+        Start Scan
+      </button>
     </form>
     {% endif %}
   </div>
 
   {% if marked %}
-    <p style="color: var(--success); font-family: var(--mono); font-size: 13px;">
+    <p class="scanner-status scanner-status-success">
       Marked present this session: {{ marked | join(', ') }}
     </p>
   {% else %}
-    <p style="color: var(--text-dim); font-size: 14px;">
+    <p class="scanner-status">
       {% if mode == "voice" %}
         Click "Start Speech" and speak the registered name clearly. Make sure your microphone is enabled.
       {% else %}
@@ -54,8 +80,10 @@
 <div class="panel">
   <div class="panel-title">
     Records
-    <a href="{{ url_for('export_attendance', date=request.args.get('date')) }}" 
-       class="btn btn-secondary" style="text-decoration:none;">📤 Export CSV (All)</a>
+    <a href="{{ url_for('export_attendance', date=request.args.get('date')) }}" class="btn-icon-sm">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Export CSV (All)
+    </a>
   </div>
   {% if records %}
     <table>
@@ -87,14 +115,14 @@
         {% if r.out_time %}
           <span class="badge">{{ r.out_time }}</span>
         {% else %}
-          <span style="color: var(--text-dim); font-size: 12px;">Not yet</span>
+          <span class="muted-text">Not yet</span>
         {% endif %}
       </td>
       <td>
         {% if r.total_hours %}
           {{ r.total_hours }} hrs
         {% else %}
-          <span style="color: var(--text-dim); font-size: 12px;">—</span>
+          <span class="muted-text">—</span>
         {% endif %}
       </td>
     </tr>

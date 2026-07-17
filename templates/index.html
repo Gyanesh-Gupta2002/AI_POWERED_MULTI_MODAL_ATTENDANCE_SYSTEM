@@ -2,11 +2,63 @@
 {% block title %}AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM — Home{% endblock %}
 
 {% block content %}
+<div class="home-wrap">
 <div class="hero">
-  <div class="scanline"></div>
-  <h1>AI-POWERED MULTI-MODAL ATTENDANCE SYSTEM</h1>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">⚡ POWERED BY AI IDENTITY VERIFICATION</div>
+
+  <h1><span class="line-wrap"><span class="hero-dot"></span><span class="w1">AI-POWERED</span> <span class="w2">MULTI-MODAL</span></span><br><span class="w1">ATTENDANCE</span> <span class="w3">SYSTEM</span></h1>
+
   <p>Multi-mode attendance with built-in identity verification —
    face, voice, QR, or RFID, your choice.</p>
-  <a href="{{ url_for('login') }}" class="btn">Enter Console</a>
+
+  <div class="hero-actions">
+    <a href="{{ url_for('login') }}" class="btn">▶ Enter Console</a>
+    <a href="#features" class="btn btn-secondary">View Demo</a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="value">99.9%</div>
+      <div class="label">Accuracy</div>
+    </div>
+    <div class="hero-stat">
+      <div class="value">&lt;1s</div>
+      <div class="label">Scan Time</div>
+    </div>
+    <div class="hero-stat">
+      <div class="value">4</div>
+      <div class="label">Scan Modes</div>
+    </div>
+    <div class="hero-stat">
+      <div class="value">24/7</div>
+      <div class="label">Live Monitoring</div>
+    </div>
+  </div>
+</div>
+
+<div class="feature-grid" id="features">
+  <a href="{{ url_for('recognize') }}" class="feature-card">
+    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <h3>Face Recognition</h3>
+    <p>Real-time facial ID with liveness detection for secure check-ins.</p>
+  </a>
+  <a href="{{ url_for('voice_attendance') }}" class="feature-card">
+    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></div>
+    <h3>Voice Match</h3>
+    <p>Voiceprint verification as a fast, contactless alternative.</p>
+  </a>
+  <a href="{{ url_for('qr_attendance') }}" class="feature-card">
+    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="17"/><line x1="14" y1="20" x2="14" y2="20.01"/><line x1="17" y1="14" x2="20" y2="14"/><line x1="20" y1="17" x2="17" y2="17"/><line x1="17" y1="20" x2="20" y2="20"/></svg></div>
+    <h3>QR Code</h3>
+    <p>Instant scan-based attendance for high-traffic environments.</p>
+  </a>
+  <a href="{{ url_for('rfid_attendance') }}" class="feature-card">
+    <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8.82a15 15 0 0 1 20 0"/><path d="M5 12.86a10 10 0 0 1 14 0"/><path d="M8.5 16.9a5 5 0 0 1 7 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+    <h3>RFID Card</h3>
+    <p>Tap-to-mark attendance using a registered RFID card.</p>
+  </a>
+</div>
 </div>
 {% endblock %}
