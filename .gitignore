@@ -6,4 +6,5 @@ trainer/
 voiceprints/
 voice_samples_temp/
 static/qrcodes/
+dataset/
 .env
